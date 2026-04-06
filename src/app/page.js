@@ -1,9 +1,10 @@
+import Link from 'next/link'
 import { supabase } from '../lib/supabase'
 
 export default async function Home() {
   const { data: denominations, error } = await supabase
     .from('denominations')
-    .select('id, name, short_description')
+    .select('id, name, short_description, slug')
     .order('name')
 
   if (error) console.error('Database error:', error)
@@ -114,15 +115,16 @@ export default async function Home() {
           {denominations && denominations.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {denominations.map((d) => (
-                <div
+                <Link
                   key={d.id}
-                  className="border border-sage/40 rounded-xl p-5 hover:border-deep-green/40 hover:shadow-sm transition-all bg-off-white"
+                  href={`/denominations/${d.slug}`}
+                  className="group block border border-sage/40 rounded-xl p-5 hover:border-deep-green/50 hover:shadow-sm transition-all bg-off-white"
                 >
-                  <h3 className="font-semibold text-deep-green text-base mb-1">{d.name}</h3>
+                  <h3 className="font-semibold text-deep-green text-base mb-1 group-hover:underline">{d.name}</h3>
                   {d.short_description && (
-                    <p className="text-gray-500 text-sm leading-relaxed">{d.short_description}</p>
+                    <p className="text-gray-500 text-sm leading-relaxed line-clamp-2">{d.short_description}</p>
                   )}
-                </div>
+                </Link>
               ))}
             </div>
           ) : (

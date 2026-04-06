@@ -1,9 +1,29 @@
 import './globals.css'
 import Link from 'next/link'
 
+const siteUrl = 'https://findmychurch.co.nz'
+
 export const metadata = {
+  metadataBase: new URL(siteUrl),
   title: 'FindMyChurch NZ',
   description: 'Find a church near you in Aotearoa New Zealand',
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'FindMyChurch NZ',
+    description: 'Find a church near you in Aotearoa New Zealand',
+    url: siteUrl,
+    siteName: 'FindMyChurch NZ',
+    locale: 'en_NZ',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FindMyChurch NZ',
+    description: 'Find a church near you in Aotearoa New Zealand',
+    site: '@findmychurchnz',
+  },
 }
 
 function LeafIcon() {
