@@ -134,33 +134,50 @@ export default async function Home() {
       {/* ── Why section ── */}
       <section className="py-16 px-4 sm:px-6 max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold text-deep-green mb-2">Why FindMyChurch?</h2>
-        <p className="text-gray-500 mb-10">Built for New Zealanders, by people who care</p>
+        <p className="text-gray-500 mb-10">Built for Kiwis, by people who care</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
             {
-              emoji: '🤝',
+              icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2F5D50" className="w-8 h-8">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                </svg>
+              ),
               title: 'Welcoming',
               body: 'Every listing is chosen with warmth in mind — churches that open their doors to all.',
             },
             {
-              emoji: '📍',
+              icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2F5D50" className="w-8 h-8">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                </svg>
+              ),
               title: 'Local',
               body: 'Focused on your town, your suburb, your community across Aotearoa.',
             },
             {
-              emoji: '✅',
+              icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2F5D50" className="w-8 h-8">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+              ),
               title: 'Trusted',
-              body: 'Information verified by church leaders and community members.',
+              body: 'Real churches, real communities, right across Aotearoa.',
             },
             {
-              emoji: '🌱',
+              icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2F5D50" className="w-8 h-8">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+                </svg>
+              ),
               title: 'Growing',
               body: 'New churches added regularly as our network expands across New Zealand.',
             },
           ].map((item) => (
             <div key={item.title} className="flex flex-col gap-3">
-              <span className="text-3xl">{item.emoji}</span>
+              {item.icon}
               <h3 className="font-semibold text-gray-900 text-lg">{item.title}</h3>
               <p className="text-gray-500 text-sm leading-relaxed">{item.body}</p>
             </div>
@@ -173,7 +190,7 @@ export default async function Home() {
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-4xl font-bold text-deep-green mb-4">You&apos;re not alone</h2>
           <p className="text-gray-700 text-lg mb-8">
-            Thousands of New Zealanders are finding community, belonging, and hope through local churches. Let us help you find yours.
+            Thousands of Kiwis are finding community, belonging, and hope through local churches. Let us help you find yours.
           </p>
           <a
             href="/churches"
