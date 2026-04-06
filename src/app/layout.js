@@ -12,7 +12,7 @@ export const metadata = {
     follow: true,
   },
   verification: {
-    google: 'REPLACE_WITH_GOOGLE_SEARCH_CONSOLE_TOKEN',
+    google: 'google4db2f0f5e1688aaa',
   },
   openGraph: {
     title: 'FindMyChurch NZ',
