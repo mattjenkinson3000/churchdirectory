@@ -7,8 +7,12 @@ export const metadata = {
   metadataBase: new URL(siteUrl),
   title: 'FindMyChurch NZ',
   description: 'Find a church near you in Aotearoa New Zealand',
-  alternates: {
-    canonical: '/',
+  robots: {
+    index: true,
+    follow: true,
+  },
+  verification: {
+    google: 'REPLACE_WITH_GOOGLE_SEARCH_CONSOLE_TOKEN',
   },
   openGraph: {
     title: 'FindMyChurch NZ',

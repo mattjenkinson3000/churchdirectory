@@ -1,6 +1,68 @@
 import Link from 'next/link'
 import { supabase } from '../lib/supabase'
 
+export const metadata = {
+  title: 'Find a Church in New Zealand | FindMyChurch NZ',
+  description:
+    'Looking for a church in New Zealand? Search Catholic, Baptist, Anglican, Presbyterian, Methodist and more churches near you across Aotearoa. Find your local church today.',
+  keywords: [
+    'churches in New Zealand',
+    'find a church NZ',
+    'Catholic church near me NZ',
+    'Baptist church New Zealand',
+    'church finder New Zealand',
+    'Aotearoa churches',
+  ],
+  alternates: {
+    canonical: 'https://findmychurch.co.nz',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      maxSnippet: -1,
+      maxImagePreview: 'large',
+    },
+  },
+  openGraph: {
+    title: 'Find a Church in New Zealand | FindMyChurch NZ',
+    description:
+      'Looking for a church in New Zealand? Search Catholic, Baptist, Anglican, Presbyterian, Methodist and more churches near you across Aotearoa.',
+    url: 'https://findmychurch.co.nz',
+    type: 'website',
+  },
+  twitter: {
+    title: 'Find a Church in New Zealand | FindMyChurch NZ',
+    description:
+      'Looking for a church in New Zealand? Search churches near you across Aotearoa. Find your local church today.',
+  },
+}
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'FindMyChurch NZ',
+    url: 'https://findmychurch.co.nz',
+    description: 'Find churches across Aotearoa New Zealand',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: 'https://findmychurch.co.nz/search?q={search_term_string}',
+      'query-input': 'required name=search_term_string',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'FindMyChurch NZ',
+    url: 'https://findmychurch.co.nz',
+    description:
+      'New Zealand church directory helping Kiwis find local churches across Aotearoa',
+  },
+]
+
 export default async function Home() {
   const { data: denominations, error } = await supabase
     .from('denominations')
@@ -10,7 +72,15 @@ export default async function Home() {
   if (error) console.error('Database error:', error)
 
   return (
-    <main>
+    <>
+      {jsonLd.map((schema, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
+      <main>
       {/* ── Hero ── */}
       <section className="min-h-[75vh] grid grid-cols-1 md:grid-cols-2">
         <div className="flex flex-col justify-center px-8 sm:px-12 lg:px-20 py-16 bg-off-white">
@@ -202,6 +272,7 @@ export default async function Home() {
           </a>
         </div>
       </section>
-    </main>
+      </main>
+    </>
   )
 }
