@@ -101,13 +101,13 @@ export default async function Home() {
       <section className="bg-white py-10 border-b border-sage/20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <form
-            action="/churches"
+            action="/search"
             method="GET"
             className="flex flex-col sm:flex-row gap-3"
           >
             <input
               type="text"
-              name="location"
+              name="q"
               placeholder="Enter your town or city"
               className="flex-1 border border-gray-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-deep-green focus:border-transparent"
             />
@@ -117,7 +117,7 @@ export default async function Home() {
             >
               <option value="">All Denominations</option>
               {denominations?.map((d) => (
-                <option key={d.id} value={d.id}>
+                <option key={d.id} value={d.slug}>
                   {d.name}
                 </option>
               ))}

@@ -171,14 +171,14 @@ export default async function DenominationPage({ params }) {
               Enter your town or city to find {name} churches in your area.
             </p>
             <form
-              action="/churches"
+              action="/search"
               method="GET"
               className="flex flex-col sm:flex-row gap-3"
             >
-              <input type="hidden" name="denomination" value={denomination.id} />
+              <input type="hidden" name="denomination" value={slug} />
               <input
                 type="text"
-                name="location"
+                name="q"
                 placeholder="Enter your town or city"
                 className="flex-1 border border-gray-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-deep-green focus:border-transparent bg-white"
               />
