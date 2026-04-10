@@ -4,7 +4,7 @@ import { supabase } from '../lib/supabase'
 export const metadata = {
   title: 'Find a Church in New Zealand | FindMyChurch NZ',
   description:
-    'Looking for a church in New Zealand? Search Catholic, Baptist, Anglican, Presbyterian, Methodist and more churches near you across Aotearoa. Find your local church today.',
+    'Find churches near you across New Zealand. Search Catholic, Baptist, Anglican, Presbyterian and more denominations by location. Your local church community is waiting.',
   keywords: [
     'churches in New Zealand',
     'find a church NZ',
@@ -61,6 +61,44 @@ const jsonLd = [
     description:
       'New Zealand church directory helping Kiwis find local churches across Aotearoa',
   },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'How do I find a church near me?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Use the search bar to enter your town, suburb, or city anywhere in Aotearoa New Zealand. You can also filter by denomination to narrow your search. Each listing includes service times, an address, and a map so you can find your way.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'What denominations are listed on FindMyChurch?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'FindMyChurch NZ lists churches from a wide range of Christian traditions across New Zealand, including Catholic, Baptist, Anglican, Presbyterian, Methodist, Pentecostal, and more. Browse our denomination guides to learn about each tradition before you visit.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Is FindMyChurch free to use?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes — FindMyChurch is completely free for anyone looking for a church in New Zealand. Simply search by location or browse by denomination and connect with local churches across Aotearoa at no cost.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Can I add my church to the directory?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Absolutely. If your church isn\'t listed yet, use the "Add Your Church" link in the navigation to submit your church\'s details. Listings are free and help your community connect with newcomers across New Zealand.',
+        },
+      },
+    ],
+  },
 ]
 
 export default async function Home() {
@@ -109,6 +147,7 @@ export default async function Home() {
               type="text"
               name="q"
               placeholder="Enter your town or city"
+              aria-label="Search for churches by town or city"
               className="flex-1 border border-gray-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-deep-green focus:border-transparent"
             />
             <select
@@ -129,6 +168,15 @@ export default async function Home() {
               Search Churches
             </button>
           </form>
+        </div>
+      </section>
+
+      {/* ── SEO paragraph ── */}
+      <section className="bg-white py-8 px-4 sm:px-6 border-b border-sage/20">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+            FindMyChurch makes it easy to find a church near you across Aotearoa New Zealand — whether you&apos;re looking for Catholic, Baptist, Anglican, or Presbyterian churches, or something else entirely. Search by your town or suburb, browse by denomination, and find a welcoming community that feels like home.
+          </p>
         </div>
       </section>
 
@@ -257,12 +305,46 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* ── FAQ section ── */}
+      <section className="py-16 px-4 sm:px-6 bg-off-white">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold text-deep-green mb-10">Frequently asked questions</h2>
+          <dl className="space-y-6">
+            {[
+              {
+                q: 'How do I find a church near me?',
+                a: 'Use the search bar above to enter your town, suburb, or city anywhere in Aotearoa New Zealand. You can also filter by denomination to narrow your search. Each listing includes service times, an address, and a map so you can find your way.',
+              },
+              {
+                q: 'What denominations are listed on FindMyChurch?',
+                a: 'FindMyChurch NZ lists churches from a wide range of Christian traditions across New Zealand, including Catholic, Baptist, Anglican, Presbyterian, Methodist, Pentecostal, and more. Browse our denomination guides to learn about each tradition before you visit.',
+              },
+              {
+                q: 'Is FindMyChurch free to use?',
+                a: 'Yes — FindMyChurch is completely free for anyone looking for a church in New Zealand. Simply search by location or browse by denomination and connect with local churches across Aotearoa at no cost.',
+              },
+              {
+                q: 'Can I add my church to the directory?',
+                a: 'Absolutely. If your church isn\'t listed yet, we\'d love to include it. Use the "Add Your Church" link in the navigation to submit your church\'s details. Listings are free and help your community connect with newcomers across New Zealand.',
+              },
+            ].map(({ q, a }) => (
+              <div key={q} className="border border-sage/40 rounded-xl p-6 bg-white">
+                <dt>
+                  <h3 className="font-semibold text-gray-900 text-base">{q}</h3>
+                </dt>
+                <dd className="mt-2 text-gray-500 text-sm leading-relaxed">{a}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
       {/* ── CTA section ── */}
       <section className="bg-warm-sand py-20 px-4 sm:px-6">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-4xl font-bold text-deep-green mb-4">You&apos;re not alone</h2>
           <p className="text-gray-700 text-lg mb-8">
-            Thousands of Kiwis are finding community, belonging, and hope through local churches. Let us help you find yours.
+            Kiwis across Aotearoa are finding community, belonging, and hope through local churches. Let us help you find yours.
           </p>
           <a
             href="/churches"
