@@ -123,7 +123,7 @@ export default async function Home() {
       <section
         className="relative min-h-[75vh] flex items-center"
         style={{
-          backgroundImage: 'linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url(/images/hero.jpg)',
+          backgroundImage: 'linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url(/Images/hero.jpg)',
           backgroundSize: '110%',
           backgroundPosition: '30% center',
           backgroundRepeat: 'no-repeat',
