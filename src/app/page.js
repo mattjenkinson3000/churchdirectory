@@ -120,19 +120,26 @@ export default async function Home() {
       ))}
       <main>
       {/* ── Hero ── */}
-      <section className="min-h-[75vh] grid grid-cols-1 md:grid-cols-2">
-        <div className="flex flex-col justify-center px-8 sm:px-12 lg:px-20 py-16 bg-off-white">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-deep-green leading-tight">
+      <section
+        className="relative min-h-[75vh] flex items-center"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url(/images/hero.jpg)',
+          backgroundSize: '110%',
+          backgroundPosition: '30% center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        <div className="w-full max-w-6xl mx-auto px-8 sm:px-12 lg:px-20 py-16">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
             Find a church near you in Aotearoa
           </h1>
-          <p className="mt-5 text-lg sm:text-xl text-gray-600 max-w-md">
+          <p className="mt-5 text-lg sm:text-xl text-white/90 max-w-md">
             Connecting you to welcoming churches across New Zealand
           </p>
           <p className="mt-4 text-base italic text-sage font-medium">
             Come as you are. There&apos;s a place for you.
           </p>
         </div>
-        <div className="bg-sage min-h-[280px] md:min-h-0" aria-hidden="true" />
       </section>
 
       {/* ── Search bar ── */}
