@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { supabase } from '../../lib/supabase'
 
@@ -86,6 +87,7 @@ async function searchChurches(query, denominationSlug) {
       suburb,
       city,
       sunday_service_time,
+      photo_url,
       denominations ( name, slug )
     `)
     .eq('is_active', true)
@@ -377,48 +379,68 @@ export default async function SearchPage({ searchParams }) {
                     <Link
                       key={c.id}
                       href={`/churches/${c.slug}`}
-                      className="group block bg-white border border-sage/40 rounded-xl p-5 hover:border-deep-green/50 hover:shadow-md transition-all"
+                      className="group block bg-white border border-sage/40 rounded-xl overflow-hidden hover:border-deep-green/50 hover:shadow-md transition-all"
                     >
-                      <div className="flex items-start justify-between gap-2 mb-2">
-                        <h2 className="font-semibold text-deep-green text-base group-hover:underline leading-snug">
-                          {c.name}
-                        </h2>
+                      {/* Photo banner */}
+                      <div className="relative h-36 bg-sage/30">
+                        {c.photo_url ? (
+                          <Image
+                            src={c.photo_url}
+                            alt={`Photo of ${c.name}`}
+                            fill
+                            sizes="(max-width: 640px) 100vw, 50vw"
+                            className="object-cover"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1" stroke="#A7C4A0" className="w-12 h-12 opacity-60">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                            </svg>
+                          </div>
+                        )}
                         {cDenomName && (
-                          <span className="shrink-0 inline-block text-xs font-medium text-deep-green/70 bg-sage/20 border border-sage/30 px-2 py-0.5 rounded-full">
+                          <span className="absolute bottom-2 left-2 inline-block text-xs font-medium text-deep-green bg-white/90 border border-sage/30 px-2 py-0.5 rounded-full">
                             {cDenomName}
                           </span>
                         )}
                       </div>
 
-                      {location && (
-                        <p className="text-gray-500 text-sm flex items-center gap-1.5 mb-1">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-3.5 h-3.5 shrink-0" aria-hidden="true">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                      {/* Card body */}
+                      <div className="p-5">
+                        <h2 className="font-semibold text-deep-green text-base group-hover:underline leading-snug mb-2">
+                          {c.name}
+                        </h2>
+
+                        {location && (
+                          <p className="text-gray-500 text-sm flex items-center gap-1.5 mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-3.5 h-3.5 shrink-0" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                            </svg>
+                            {location}
+                          </p>
+                        )}
+
+                        {c.address && (
+                          <p className="text-gray-400 text-xs mb-2 pl-5">{c.address}</p>
+                        )}
+
+                        {c.sunday_service_time && (
+                          <p className="text-gray-500 text-sm flex items-center gap-1.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-3.5 h-3.5 shrink-0" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                            Sunday {c.sunday_service_time}
+                          </p>
+                        )}
+
+                        <span className="mt-3 inline-flex items-center gap-1 text-deep-green text-xs font-medium">
+                          View {c.name} details
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-3.5 h-3.5" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                           </svg>
-                          {location}
-                        </p>
-                      )}
-
-                      {c.address && (
-                        <p className="text-gray-400 text-xs mb-2 pl-5">{c.address}</p>
-                      )}
-
-                      {c.sunday_service_time && (
-                        <p className="text-gray-500 text-sm flex items-center gap-1.5">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-3.5 h-3.5 shrink-0" aria-hidden="true">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                          </svg>
-                          Sunday {c.sunday_service_time}
-                        </p>
-                      )}
-
-                      <span className="mt-3 inline-flex items-center gap-1 text-deep-green text-xs font-medium">
-                        View {c.name} details
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-3.5 h-3.5" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                        </svg>
-                      </span>
+                        </span>
+                      </div>
                     </Link>
                   )
                 })}
