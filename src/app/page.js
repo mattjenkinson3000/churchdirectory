@@ -120,24 +120,15 @@ export default async function Home() {
       ))}
       <main>
       {/* ── Hero ── */}
-      <section className="relative h-[75vh] min-h-[480px] flex items-center overflow-hidden">
-        {/* Background image */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/Images/hero.jpg"
-          alt=""
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: '30% center',
-          }}
-        />
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/45" aria-hidden="true" />
+      <section
+        className="relative h-[75vh] min-h-[480px] flex items-center"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.45)),url(/images/hero.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: '30% center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
         {/* Content */}
         <div className="relative z-10 w-full max-w-6xl mx-auto px-8 sm:px-12 lg:px-20 py-16">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
