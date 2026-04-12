@@ -123,7 +123,7 @@ export default async function Home() {
       <main>
       {/* ── Hero ── */}
       <section
-        className="relative h-[75vh] min-h-[480px] flex items-center"
+        className="relative h-[75vh] min-h-[560px]"
         style={{
           backgroundImage: 'linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.45)),url(/images/hero.jpg)',
           backgroundSize: 'cover',
@@ -131,60 +131,64 @@ export default async function Home() {
           backgroundRepeat: 'no-repeat',
         }}
       >
-        {/* Content */}
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-8 sm:px-12 lg:px-20 py-16">
+        {/* Text content — centred in the upper portion, clear of the card */}
+        <div className="relative z-10 flex flex-col justify-center h-full w-full max-w-6xl mx-auto px-8 sm:px-12 lg:px-20 pb-36">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
             Find a church near you in Aotearoa
           </h1>
           <p className="mt-5 text-lg sm:text-xl text-white/90 max-w-md">
-            Connecting you to welcoming churches across New Zealand
+            Connecting you to welcoming churches across Aotearoa New Zealand
           </p>
           <p className="mt-4 text-base italic text-sage font-medium">
             Come as you are. There&apos;s a place for you.
           </p>
         </div>
-      </section>
 
-      {/* ── Search bar ── */}
-      <section className="bg-white py-10 border-b border-sage/20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <form
-            action="/search"
-            method="GET"
-            className="flex flex-col sm:flex-row gap-3"
-          >
-            <input
-              type="text"
-              name="q"
-              placeholder="Enter your town or city"
-              aria-label="Search for churches by town or city"
-              className="flex-1 border border-gray-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-deep-green focus:border-transparent"
-            />
-            <select
-              name="denomination"
-              className="sm:w-52 border border-gray-300 rounded-md px-4 py-3 text-sm text-gray-600 focus:outline-none focus:ring-2 focus:ring-deep-green focus:border-transparent bg-white"
+        {/* Floating search card — half in / half out of the hero */}
+        <div className="absolute bottom-0 left-0 right-0 z-30 translate-y-1/2 px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg px-5 sm:px-6 py-5">
+            <form
+              action="/search"
+              method="GET"
+              className="flex flex-col sm:flex-row gap-3"
             >
-              <option value="">All Denominations</option>
-              {denominations?.map((d) => (
-                <option key={d.id} value={d.slug}>
-                  {d.name}
-                </option>
-              ))}
-            </select>
-            <button
-              type="submit"
-              className="bg-deep-green text-white px-6 py-3 rounded-md text-sm font-semibold hover:bg-deep-green/90 transition-colors whitespace-nowrap"
-            >
-              Search Churches
-            </button>
-          </form>
+              <input
+                type="text"
+                name="q"
+                placeholder="Enter your town or city"
+                aria-label="Search for churches by town or city"
+                className="flex-1 border border-gray-300 rounded-md px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-deep-green focus:border-transparent"
+              />
+              <select
+                name="denomination"
+                className="sm:w-52 border border-gray-300 rounded-md px-4 py-3 text-sm text-gray-600 focus:outline-none focus:ring-2 focus:ring-deep-green focus:border-transparent bg-white"
+              >
+                <option value="">All Denominations</option>
+                {denominations?.map((d) => (
+                  <option key={d.id} value={d.slug}>
+                    {d.name}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="submit"
+                className="bg-deep-green text-white px-6 py-3 rounded-md text-sm font-semibold hover:bg-deep-green/90 transition-colors whitespace-nowrap"
+              >
+                Search Churches
+              </button>
+            </form>
 
-          <div className="mt-4 flex items-center gap-3">
-            <span className="text-sm text-gray-400">or</span>
-            <LocationButton />
+            <div className="mt-4 flex items-center gap-3">
+              <span className="text-sm text-gray-400">or</span>
+              <LocationButton />
+            </div>
           </div>
         </div>
       </section>
+
+      {/* Spacer — clears the half of the card that overlaps below the hero.
+          Height matches ~half the card's rendered height on each breakpoint. */}
+      <div className="bg-off-white h-36 sm:h-20" />
 
       <JourneyTabs />
 
@@ -324,9 +328,9 @@ export default async function Home() {
 
       {/* ── FAQ section ── */}
       <section className="py-16 px-4 sm:px-6 bg-off-white">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold text-deep-green mb-10">Frequently asked questions</h2>
-          <dl className="space-y-6">
+          <dl className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
               {
                 q: 'How do I find a church near me?',
@@ -345,7 +349,7 @@ export default async function Home() {
                 a: 'Absolutely. If your church isn\'t listed yet, we\'d love to include it. Use the "Add Your Church" link in the navigation to submit your church\'s details. Listings are free and help your community connect with newcomers across New Zealand.',
               },
             ].map(({ q, a }) => (
-              <div key={q} className="border border-sage/40 rounded-xl p-6 bg-white">
+              <div key={q} className="border border-sage/40 rounded-xl p-6 bg-white h-full">
                 <dt>
                   <h3 className="font-semibold text-gray-900 text-base">{q}</h3>
                 </dt>
