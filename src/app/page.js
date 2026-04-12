@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { supabase } from '../lib/supabase'
 import LocationButton from './components/LocationButton'
+import JourneyTabs from './components/JourneyTabs'
 
 export const metadata = {
   title: 'Find a Church in New Zealand | FindMyChurch NZ',
@@ -184,6 +185,8 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      <JourneyTabs />
 
       {/* ── SEO paragraph ── */}
       <section className="bg-white py-8 px-4 sm:px-6 border-b border-sage/20">
