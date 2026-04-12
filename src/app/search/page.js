@@ -66,6 +66,14 @@ export async function generateMetadata({ searchParams }) {
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
+// Priority score for sorting: exact city > partial city > suburb > name
+function matchScore(church, lowerQuery) {
+  if (church.city?.toLowerCase() === lowerQuery) return 3
+  if (church.city?.toLowerCase().includes(lowerQuery)) return 2
+  if (church.suburb?.toLowerCase().includes(lowerQuery)) return 1
+  return 0 // name match
+}
+
 async function searchChurches(query, denominationSlug) {
   let denominationId = null
   if (denominationSlug) {
@@ -91,12 +99,11 @@ async function searchChurches(query, denominationSlug) {
       denominations ( name, slug )
     `)
     .eq('is_active', true)
-    .order('city')
-    .order('name')
     .limit(RESULT_LIMIT + 1) // fetch one extra to detect overflow
 
   if (query) {
-    dbQuery = dbQuery.or(`city.ilike.%${query}%,suburb.ilike.%${query}%`)
+    // No address field — avoids "Wellington Street" appearing in Wellington city searches
+    dbQuery = dbQuery.or(`name.ilike.%${query}%,city.ilike.%${query}%,suburb.ilike.%${query}%`)
   }
 
   if (denominationId) {
@@ -105,7 +112,17 @@ async function searchChurches(query, denominationSlug) {
 
   const { data, error } = await dbQuery
   if (error) console.error('Search error:', error)
-  return data ?? []
+
+  const results = data ?? []
+  if (!query) return results
+
+  // Sort: city matches first, then suburb, then name — within each tier sort alphabetically
+  const lower = query.toLowerCase()
+  return results.sort((a, b) => {
+    const diff = matchScore(b, lower) - matchScore(a, lower)
+    if (diff !== 0) return diff
+    return (a.city ?? '').localeCompare(b.city ?? '') || a.name.localeCompare(b.name)
+  })
 }
 
 async function getDenominations() {
