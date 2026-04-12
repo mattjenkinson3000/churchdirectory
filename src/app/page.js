@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { supabase } from '../lib/supabase'
+import LocationButton from './components/LocationButton'
 
 export const metadata = {
   title: 'Find a Church in New Zealand | FindMyChurch NZ',
@@ -176,6 +177,11 @@ export default async function Home() {
               Search Churches
             </button>
           </form>
+
+          <div className="mt-4 flex items-center gap-3">
+            <span className="text-sm text-gray-400">or</span>
+            <LocationButton />
+          </div>
         </div>
       </section>
 

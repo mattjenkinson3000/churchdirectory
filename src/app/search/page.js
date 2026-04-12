@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { supabase } from '../../lib/supabase'
+import LocationButton from '../components/LocationButton'
 
 const SITE_URL = 'https://findmychurch.co.nz'
 const RESULT_LIMIT = 24
@@ -8,11 +9,34 @@ const RESULT_LIMIT = 24
 // Popular NZ cities for internal linking
 const POPULAR_CITIES = ['Auckland', 'Wellington', 'Christchurch', 'Hamilton', 'Tauranga', 'Dunedin']
 
+// ─── Haversine distance ───────────────────────────────────────────────────────
+
+function haversineKm(lat1, lon1, lat2, lon2) {
+  const R = 6371
+  const dLat = ((lat2 - lat1) * Math.PI) / 180
+  const dLon = ((lon2 - lon1) * Math.PI) / 180
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) ** 2
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+}
+
 // ─── Metadata ────────────────────────────────────────────────────────────────
 
 export async function generateMetadata({ searchParams }) {
-  const { q, denomination: denominationSlug } = await searchParams
+  const { q, denomination: denominationSlug, lat, lng } = await searchParams
   const query = q?.trim() ?? ''
+
+  // Location searches are personalised — never index
+  if (!query && !denominationSlug && lat && lng) {
+    return {
+      title: 'Churches Near You | FindMyChurch NZ',
+      description: 'Find churches near your current location in New Zealand.',
+      robots: { index: false, follow: true },
+    }
+  }
 
   let denominationName = null
   if (denominationSlug) {
@@ -55,23 +79,18 @@ export async function generateMetadata({ searchParams }) {
     description,
     robots: { index: true, follow: true },
     alternates: { canonical: canonicalUrl },
-    openGraph: {
-      title,
-      description,
-      url: canonicalUrl,
-      type: 'website',
-    },
+    openGraph: { title, description, url: canonicalUrl, type: 'website' },
   }
 }
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
-// Priority score for sorting: exact city > partial city > suburb > name
+// Priority score for text search sorting: exact city > partial city > suburb > name
 function matchScore(church, lowerQuery) {
   if (church.city?.toLowerCase() === lowerQuery) return 3
   if (church.city?.toLowerCase().includes(lowerQuery)) return 2
   if (church.suburb?.toLowerCase().includes(lowerQuery)) return 1
-  return 0 // name match
+  return 0
 }
 
 async function searchChurches(query, denominationSlug) {
@@ -88,24 +107,16 @@ async function searchChurches(query, denominationSlug) {
   let dbQuery = supabase
     .from('churches')
     .select(`
-      id,
-      name,
-      slug,
-      address,
-      suburb,
-      city,
-      sunday_service_time,
-      photo_url,
+      id, name, slug, address, suburb, city,
+      sunday_service_time, photo_url,
       denominations ( name, slug )
     `)
     .eq('is_active', true)
-    .limit(RESULT_LIMIT + 1) // fetch one extra to detect overflow
+    .limit(RESULT_LIMIT + 1)
 
   if (query) {
-    // No address field — avoids "Wellington Street" appearing in Wellington city searches
     dbQuery = dbQuery.or(`name.ilike.%${query}%,city.ilike.%${query}%,suburb.ilike.%${query}%`)
   }
-
   if (denominationId) {
     dbQuery = dbQuery.eq('denomination_id', denominationId)
   }
@@ -116,13 +127,53 @@ async function searchChurches(query, denominationSlug) {
   const results = data ?? []
   if (!query) return results
 
-  // Sort: city matches first, then suburb, then name — within each tier sort alphabetically
   const lower = query.toLowerCase()
   return results.sort((a, b) => {
     const diff = matchScore(b, lower) - matchScore(a, lower)
     if (diff !== 0) return diff
     return (a.city ?? '').localeCompare(b.city ?? '') || a.name.localeCompare(b.name)
   })
+}
+
+async function searchChurchesByLocation(userLat, userLng, denominationSlug) {
+  let denominationId = null
+  if (denominationSlug) {
+    const { data: denom } = await supabase
+      .from('denominations')
+      .select('id')
+      .eq('slug', denominationSlug)
+      .single()
+    denominationId = denom?.id ?? null
+  }
+
+  let dbQuery = supabase
+    .from('churches')
+    .select(`
+      id, name, slug, address, suburb, city,
+      sunday_service_time, photo_url, latitude, longitude,
+      denominations ( name, slug )
+    `)
+    .eq('is_active', true)
+    .not('latitude', 'is', null)
+    .not('longitude', 'is', null)
+
+  if (denominationId) {
+    dbQuery = dbQuery.eq('denomination_id', denominationId)
+  }
+
+  const { data, error } = await dbQuery
+  if (error) console.error('Location search error:', error)
+
+  const results = data ?? []
+
+  // Sort by distance ascending, then slice to RESULT_LIMIT + 1 for overflow detection
+  results.sort(
+    (a, b) =>
+      haversineKm(userLat, userLng, a.latitude, a.longitude) -
+      haversineKm(userLat, userLng, b.latitude, b.longitude)
+  )
+
+  return results.slice(0, RESULT_LIMIT + 1)
 }
 
 async function getDenominations() {
@@ -135,41 +186,40 @@ async function getDenominations() {
 
 // ─── JSON-LD ──────────────────────────────────────────────────────────────────
 
-function buildJsonLd({ query, denominationName, denominationSlug, churches, hasMore }) {
+function buildJsonLd({ query, isLocationSearch, denominationName, denominationSlug, churches, hasMore }) {
   const qsParams = new URLSearchParams()
   if (query) qsParams.set('q', query)
   if (denominationSlug) qsParams.set('denomination', denominationSlug)
   const searchUrl = `${SITE_URL}/search${qsParams.toString() ? `?${qsParams.toString()}` : ''}`
 
-  const pageTitle =
-    denominationName && query
-      ? `${denominationName} Churches in ${query}, New Zealand`
-      : query
-      ? `Churches in ${query}, New Zealand`
-      : denominationName
-      ? `${denominationName} Churches in New Zealand`
-      : 'Church Search — New Zealand'
+  const pageTitle = isLocationSearch
+    ? denominationName
+      ? `${denominationName} Churches Near You`
+      : 'Churches Near Your Location'
+    : denominationName && query
+    ? `${denominationName} Churches in ${query}, New Zealand`
+    : query
+    ? `Churches in ${query}, New Zealand`
+    : denominationName
+    ? `${denominationName} Churches in New Zealand`
+    : 'Church Search — New Zealand'
 
   const breadcrumbItems = [
     { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
     { '@type': 'ListItem', position: 2, name: 'Search', item: `${SITE_URL}/search` },
-    ...(query
-      ? [{ '@type': 'ListItem', position: 3, name: query, item: searchUrl }]
+    ...(query || isLocationSearch
+      ? [{ '@type': 'ListItem', position: 3, name: isLocationSearch ? 'Near Me' : query, item: searchUrl }]
       : []),
   ]
 
   const schemas = [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
-      itemListElement: breadcrumbItems,
-    },
+    { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: breadcrumbItems },
     {
       '@context': 'https://schema.org',
       '@type': 'SearchResultsPage',
       name: pageTitle,
       url: searchUrl,
-      description: `${churches.length}${hasMore ? '+' : ''} church${churches.length === 1 ? '' : 'es'} found${query ? ` in ${query}` : ''}${denominationName ? ` (${denominationName})` : ''} on FindMyChurch NZ`,
+      description: `${churches.length}${hasMore ? '+' : ''} church${churches.length === 1 ? '' : 'es'} found on FindMyChurch NZ`,
     },
   ]
 
@@ -194,12 +244,25 @@ function buildJsonLd({ query, denominationName, denominationSlug, churches, hasM
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default async function SearchPage({ searchParams }) {
-  const { q, denomination: denominationSlug } = await searchParams
+  const { q, denomination: denominationSlug, lat, lng } = await searchParams
   const query = q?.trim() ?? ''
-  const hasQuery = query || denominationSlug
+
+  const userLat = lat ? parseFloat(lat) : null
+  const userLng = lng ? parseFloat(lng) : null
+  // Location search: coords present, valid numbers, no text query
+  const isLocationSearch =
+    userLat !== null && !isNaN(userLat) &&
+    userLng !== null && !isNaN(userLng) &&
+    !query
+
+  const hasQuery = query || denominationSlug || isLocationSearch
 
   const [allChurches, denominations] = await Promise.all([
-    hasQuery ? searchChurches(query, denominationSlug) : Promise.resolve([]),
+    isLocationSearch
+      ? searchChurchesByLocation(userLat, userLng, denominationSlug)
+      : hasQuery
+      ? searchChurches(query, denominationSlug)
+      : Promise.resolve([]),
     getDenominations(),
   ])
 
@@ -207,22 +270,29 @@ export default async function SearchPage({ searchParams }) {
   const churches = hasMore ? allChurches.slice(0, RESULT_LIMIT) : allChurches
   const activeDenomination = denominations.find((d) => d.slug === denominationSlug)
 
-  // Build h1
-  const h1 =
-    activeDenomination && query
-      ? `${activeDenomination.name} Churches in ${query}, New Zealand`
-      : query
-      ? `Churches in ${query}, New Zealand`
-      : activeDenomination
-      ? `${activeDenomination.name} Churches in New Zealand`
-      : 'Find a Church Near You'
+  // ── h1 ──
+  const h1 = isLocationSearch
+    ? activeDenomination
+      ? `${activeDenomination.name} Churches Near You`
+      : 'Churches Near Your Location'
+    : activeDenomination && query
+    ? `${activeDenomination.name} Churches in ${query}, New Zealand`
+    : query
+    ? `Churches in ${query}, New Zealand`
+    : activeDenomination
+    ? `${activeDenomination.name} Churches in New Zealand`
+    : 'Find a Church Near You'
 
-  // Build contextual intro paragraph
+  // ── Intro paragraph ──
   let introParagraph = null
   if (hasQuery && churches.length > 0) {
     const count = `${churches.length}${hasMore ? '+' : ''}`
     const plural = churches.length === 1 ? 'church' : 'churches'
-    if (activeDenomination && query) {
+    if (isLocationSearch) {
+      introParagraph = activeDenomination
+        ? `Showing the ${count} closest ${activeDenomination.name} ${plural} to your location, sorted by distance.`
+        : `Showing the ${count} closest ${plural} to your location, sorted by distance.`
+    } else if (activeDenomination && query) {
       introParagraph = `Showing ${count} ${activeDenomination.name} ${plural} in and around ${query}. Each listing includes contact details, service times and directions.`
     } else if (query) {
       introParagraph = `Showing ${count} ${plural} in and around ${query} across all denominations. Click any listing to see full details, service times and a map.`
@@ -233,11 +303,19 @@ export default async function SearchPage({ searchParams }) {
 
   const jsonLd = buildJsonLd({
     query,
+    isLocationSearch,
     denominationName: activeDenomination?.name,
     denominationSlug,
     churches,
     hasMore,
   })
+
+  // Helper: clear-filter href (preserves location or text query)
+  const clearDenominationHref = isLocationSearch
+    ? `/search?lat=${userLat}&lng=${userLng}`
+    : query
+    ? `/search?q=${encodeURIComponent(query)}`
+    : '/search'
 
   return (
     <main>
@@ -261,6 +339,12 @@ export default async function SearchPage({ searchParams }) {
                 <Link href="/search" className="hover:text-white transition-colors">Search</Link>
                 <span aria-hidden="true">/</span>
                 <span className="text-white">{query}</span>
+              </>
+            ) : isLocationSearch ? (
+              <>
+                <Link href="/search" className="hover:text-white transition-colors">Search</Link>
+                <span aria-hidden="true">/</span>
+                <span className="text-white">Near Me</span>
               </>
             ) : (
               <span className="text-white">Search</span>
@@ -298,6 +382,14 @@ export default async function SearchPage({ searchParams }) {
               Search Churches
             </button>
           </form>
+
+          {/* Location button inside header, only when not already a location search */}
+          {!isLocationSearch && (
+            <div className="mt-4 flex items-center gap-3">
+              <span className="text-sm text-sage/70">or</span>
+              <LocationButton denominationSlug={denominationSlug ?? ''} />
+            </div>
+          )}
         </div>
       </section>
 
@@ -350,23 +442,28 @@ export default async function SearchPage({ searchParams }) {
                 <p className="text-gray-600 text-sm mb-5">{introParagraph}</p>
               )}
 
-              {/* Denomination filter pills — only when no denomination active */}
-              {query && !activeDenomination && (
+              {/* Denomination filter pills */}
+              {!activeDenomination && (query || isLocationSearch) && (
                 <div className="mb-6 flex flex-wrap gap-2 items-center">
                   <span className="text-sm text-gray-500">Filter by denomination:</span>
-                  {denominations.slice(0, 8).map((d) => (
-                    <Link
-                      key={d.id}
-                      href={`/search?q=${encodeURIComponent(query)}&denomination=${d.slug}`}
-                      className="inline-block border border-sage/40 text-deep-green text-xs px-3 py-1.5 rounded-full hover:bg-sage/20 transition-colors"
-                    >
-                      {d.name}
-                    </Link>
-                  ))}
+                  {denominations.slice(0, 8).map((d) => {
+                    const href = isLocationSearch
+                      ? `/search?lat=${userLat}&lng=${userLng}&denomination=${d.slug}`
+                      : `/search?q=${encodeURIComponent(query)}&denomination=${d.slug}`
+                    return (
+                      <Link
+                        key={d.id}
+                        href={href}
+                        className="inline-block border border-sage/40 text-deep-green text-xs px-3 py-1.5 rounded-full hover:bg-sage/20 transition-colors"
+                      >
+                        {d.name}
+                      </Link>
+                    )
+                  })}
                 </div>
               )}
 
-              {/* Active denomination — link to detail page + clear */}
+              {/* Active denomination */}
               {activeDenomination && (
                 <div className="mb-5 flex items-center gap-3 text-sm">
                   <span className="text-gray-500">Denomination:</span>
@@ -376,10 +473,7 @@ export default async function SearchPage({ searchParams }) {
                   >
                     {activeDenomination.name} →
                   </Link>
-                  <Link
-                    href={query ? `/search?q=${encodeURIComponent(query)}` : '/search'}
-                    className="text-gray-400 hover:text-gray-600 text-xs"
-                  >
+                  <Link href={clearDenominationHref} className="text-gray-400 hover:text-gray-600 text-xs">
                     Clear filter
                   </Link>
                 </div>
@@ -389,8 +483,11 @@ export default async function SearchPage({ searchParams }) {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {churches.map((c) => {
                   const cDenomName = c.denominations?.name
-                  const cDenomSlug = c.denominations?.slug
                   const location = [c.suburb, c.city].filter(Boolean).join(', ')
+                  const distanceKm =
+                    isLocationSearch && c.latitude && c.longitude
+                      ? haversineKm(userLat, userLng, c.latitude, c.longitude)
+                      : null
 
                   return (
                     <Link
@@ -418,6 +515,15 @@ export default async function SearchPage({ searchParams }) {
                         {cDenomName && (
                           <span className="absolute bottom-2 left-2 inline-block text-xs font-medium text-deep-green bg-white/90 border border-sage/30 px-2 py-0.5 rounded-full">
                             {cDenomName}
+                          </span>
+                        )}
+                        {distanceKm !== null && (
+                          <span className="absolute bottom-2 right-2 inline-flex items-center gap-1 text-xs font-medium text-white bg-deep-green/80 px-2 py-0.5 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-3 h-3" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                            </svg>
+                            {distanceKm.toFixed(1)} km
                           </span>
                         )}
                       </div>
@@ -466,11 +572,31 @@ export default async function SearchPage({ searchParams }) {
               {/* Overflow notice */}
               {hasMore && (
                 <p className="mt-6 text-center text-sm text-gray-500">
-                  Showing the first {RESULT_LIMIT} results. Try a more specific suburb or use the denomination filter to narrow your search.
+                  {isLocationSearch
+                    ? `Showing the ${RESULT_LIMIT} closest churches to your location.`
+                    : `Showing the first ${RESULT_LIMIT} results. Try a more specific suburb or use the denomination filter to narrow your search.`}
                 </p>
               )}
 
-              {/* Related city links */}
+              {/* Search by text link when in location mode */}
+              {isLocationSearch && (
+                <div className="mt-8 pt-6 border-t border-sage/30 text-center">
+                  <p className="text-sm text-gray-500 mb-3">Want to search a specific city instead?</p>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {POPULAR_CITIES.map((city) => (
+                      <Link
+                        key={city}
+                        href={`/search?q=${encodeURIComponent(city)}${denominationSlug ? `&denomination=${denominationSlug}` : ''}`}
+                        className="inline-block border border-sage/40 text-deep-green text-sm px-3 py-1.5 rounded-full hover:bg-sage/20 transition-colors"
+                      >
+                        {city}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Related city links for text search */}
               {query && (
                 <div className="mt-10 pt-8 border-t border-sage/30">
                   <h2 className="text-base font-semibold text-deep-green mb-3">Search churches in other New Zealand cities</h2>
@@ -497,10 +623,14 @@ export default async function SearchPage({ searchParams }) {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
                 </svg>
                 <h2 className="font-semibold text-gray-800 text-lg mb-2">
-                  No churches found near &ldquo;{query || activeDenomination?.name}&rdquo;
+                  {isLocationSearch
+                    ? 'No churches found near your location'
+                    : `No churches found near \u201c${query || activeDenomination?.name}\u201d`}
                 </h2>
                 <p className="text-gray-500 text-sm mb-6 max-w-sm mx-auto">
-                  We couldn&apos;t find any{activeDenomination ? ` ${activeDenomination.name}` : ''} churches matching that location. Try a nearby city, or browse all denominations.
+                  {isLocationSearch
+                    ? `We couldn\u2019t find any${activeDenomination ? ` ${activeDenomination.name}` : ''} churches with map coordinates near you. Try searching by city name instead.`
+                    : `We couldn\u2019t find any${activeDenomination ? ` ${activeDenomination.name}` : ''} churches matching that location. Try a nearby city, or browse all denominations.`}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <Link
