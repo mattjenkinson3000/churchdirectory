@@ -58,7 +58,17 @@ export default async function DenominationPage({ params }) {
 
   if (!denomination) notFound()
 
-  const { name, short_description, full_description } = denomination
+  const { id: denominationId, name, short_description, full_description } = denomination
+
+  // Distinct cities for this denomination
+  const { data: cityRows } = await supabase
+    .from('churches')
+    .select('city')
+    .eq('is_active', true)
+    .eq('denomination_id', denominationId)
+    .not('city', 'is', null)
+
+  const cities = [...new Set((cityRows ?? []).map((r) => r.city).filter(Boolean))].sort()
 
   const faqs = [
     {
@@ -225,6 +235,28 @@ export default async function DenominationPage({ params }) {
             </dl>
           </div>
         </section>
+
+        {/* ── Find by city ── */}
+        {cities.length > 0 && (
+          <section className="py-12 px-4 sm:px-6 bg-white border-t border-sage/20">
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-xl font-bold text-deep-green mb-5">
+                Find {name} Churches by City
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {cities.map((city) => (
+                  <Link
+                    key={city}
+                    href={`/find/${city.toLowerCase()}/${slug}`}
+                    className="inline-block bg-sage/20 border border-sage/40 text-deep-green text-sm font-medium px-4 py-2 rounded-full hover:bg-sage/40 transition-colors"
+                  >
+                    {city}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* ── Back link ── */}
         <section className="py-10 px-4 sm:px-6 border-t border-sage/20">
