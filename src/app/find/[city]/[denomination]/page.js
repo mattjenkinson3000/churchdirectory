@@ -76,6 +76,27 @@ async function getRelatedDenominations(cityParam, excludeId) {
   return out.sort((a, b) => a.name.localeCompare(b.name))
 }
 
+async function getTopSuburbs(cityParam, denominationId) {
+  const { data } = await supabase
+    .from('churches')
+    .select('suburb')
+    .eq('is_active', true)
+    .ilike('city', cityParam)
+    .eq('denomination_id', denominationId)
+    .not('suburb', 'is', null)
+    .neq('suburb', '')
+  if (!data?.length) return []
+  const counts = {}
+  for (const row of data) {
+    const s = row.suburb?.trim()
+    if (s) counts[s] = (counts[s] || 0) + 1
+  }
+  return Object.entries(counts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 4)
+    .map(([suburb]) => suburb)
+}
+
 async function getRelatedCities(denominationId, excludeCity) {
   const { data } = await supabase
     .from('churches')
@@ -88,6 +109,20 @@ async function getRelatedCities(denominationId, excludeCity) {
   return [...new Set(data.map((r) => r.city).filter(Boolean))]
     .filter((c) => c.toLowerCase() !== lower)
     .sort()
+}
+
+function buildIntroParagraph(count, denomName, cityDisplay, suburbs) {
+  if (count === 1) {
+    return `There is 1 ${denomName} church listed in ${cityDisplay}. Browse the listing below to find service times, address and contact details.`
+  }
+  const tail = `Whether you're new to the area, exploring faith for the first time, or looking for a fresh church home, browse the listings below to find a welcoming ${denomName} community near you.`
+  if (suburbs.length >= 2) {
+    const last = suburbs[suburbs.length - 1]
+    const rest = suburbs.slice(0, -1)
+    const suburbList = rest.join(', ') + ' and ' + last
+    return `There are ${count} ${denomName} churches across ${cityDisplay}, including suburbs like ${suburbList}. ${tail}`
+  }
+  return `There are ${count} ${denomName} churches listed in ${cityDisplay}. ${tail}`
 }
 
 // ─── generateStaticParams ────────────────────────────────────────────────────
@@ -159,11 +194,14 @@ export default async function CityDenominationPage({ params }) {
   const denom = await getDenomination(denomination)
   if (!denom) notFound()
 
-  const [churches, relatedDenoms, relatedCities] = await Promise.all([
+  const [churches, relatedDenoms, relatedCities, topSuburbs] = await Promise.all([
     getChurches(city, denom.id),
     getRelatedDenominations(city, denom.id),
     getRelatedCities(denom.id, city),
+    getTopSuburbs(city, denom.id),
   ])
+
+  const introParagraph = buildIntroParagraph(churches.length, denom.name, cityDisplay, topSuburbs)
 
   const jsonLd = [
     {
@@ -240,13 +278,23 @@ export default async function CityDenominationPage({ params }) {
               {churches.length} {churches.length === 1 ? 'church' : 'churches'} listed
             </p>
 
-            {denom.short_description && (
-              <p className="mt-4 text-white/80 text-base max-w-2xl leading-relaxed">
-                {denom.short_description} Find a {denom.name} church in {cityDisplay} below.
-              </p>
-            )}
           </div>
         </section>
+
+        {/* ── Intro ── */}
+        {churches.length > 0 && (
+          <section className="px-4 sm:px-6 pt-10 pb-2">
+            <div className="max-w-5xl mx-auto space-y-4">
+              <p className="text-gray-700 leading-relaxed">{introParagraph}</p>
+
+              {denom.short_description && (
+                <div className="bg-sage/20 border-l-4 border-sage rounded-r-lg px-5 py-4">
+                  <p className="text-gray-600 text-sm italic leading-relaxed">{denom.short_description}</p>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
 
         {/* ── Church grid ── */}
         <section className="py-12 px-4 sm:px-6">
