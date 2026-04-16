@@ -236,6 +236,18 @@ export default async function DenominationPage({ params }) {
           </div>
         </section>
 
+        {/* ── What all churches share ── */}
+        <section className="py-10 px-4 sm:px-6 bg-white border-t border-sage/20">
+          <div className="max-w-3xl mx-auto bg-sage/20 rounded-xl p-6">
+            <h2 className="text-base font-bold text-deep-green mb-2">What all churches share</h2>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Across every denomination listed on FindMyChurch NZ, you&apos;ll find churches that
+              believe in Jesus Christ, follow the Bible, and welcome people into community. The
+              style of worship may differ — but the heart of the faith is the same.
+            </p>
+          </div>
+        </section>
+
         {/* ── Find by city ── */}
         {cities.length > 0 && (
           <section className="py-12 px-4 sm:px-6 bg-white border-t border-sage/20">

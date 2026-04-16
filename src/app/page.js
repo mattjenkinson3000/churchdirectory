@@ -248,7 +248,7 @@ export default async function Home() {
       {/* ── Denomination grid ── */}
       <section className="bg-white py-16 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-deep-green mb-2">Denominations</h2>
+          <h2 className="text-3xl font-bold text-deep-green mb-2">Different Traditions, One Faith</h2>
           <p className="text-gray-500 mb-10">Explore the traditions and communities across Aotearoa</p>
 
           {denominations && denominations.length > 0 ? (
@@ -272,57 +272,50 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ── Why section ── */}
-      <section className="py-16 px-4 sm:px-6 max-w-6xl mx-auto">
-        <h2 className="text-3xl font-bold text-deep-green mb-2">Why FindMyChurch?</h2>
-        <p className="text-gray-500 mb-10">Built for Kiwis, by people who care</p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            {
-              icon: (
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2F5D50" className="w-8 h-8">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                </svg>
-              ),
-              title: 'Welcoming',
-              body: 'Every listing is chosen with warmth in mind — churches that open their doors to all.',
-            },
-            {
-              icon: (
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2F5D50" className="w-8 h-8">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                </svg>
-              ),
-              title: 'Local',
-              body: 'Focused on your town, your suburb, your community across Aotearoa.',
-            },
-            {
-              icon: (
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2F5D50" className="w-8 h-8">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-              ),
-              title: 'Trusted',
-              body: 'Real churches, real communities, right across Aotearoa.',
-            },
-            {
-              icon: (
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2F5D50" className="w-8 h-8">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
-                </svg>
-              ),
-              title: 'Growing',
-              body: 'New churches added regularly as our network expands across New Zealand.',
-            },
-          ].map((item) => (
-            <div key={item.title} className="flex flex-col gap-3">
-              {item.icon}
-              <h3 className="font-semibold text-gray-900 text-lg">{item.title}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">{item.body}</p>
-            </div>
-          ))}
+      {/* ── Wherever you are in your journey ── */}
+      <section className="py-16 px-4 sm:px-6 bg-off-white">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-deep-green mb-2">Wherever you are in your journey</h2>
+          <p className="text-gray-500 mb-10 max-w-2xl">
+            Churches across Aotearoa are full of people at different stages of faith — curious, new, and long-term. There&apos;s a place for you.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {[
+              {
+                icon: (
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2F5D50" className="w-7 h-7" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
+                  </svg>
+                ),
+                title: 'Just curious?',
+                body: 'No pressure, no commitment. Browse churches in your area and explore at your own pace.',
+              },
+              {
+                icon: (
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2F5D50" className="w-7 h-7" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                  </svg>
+                ),
+                title: 'New to faith?',
+                body: 'Finding the right church community early on makes a real difference. We\'ll help you find somewhere warm and welcoming.',
+              },
+              {
+                icon: (
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2F5D50" className="w-7 h-7" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+                  </svg>
+                ),
+                title: 'Relocating?',
+                body: 'Moving to a new city doesn\'t mean starting from scratch. Find your new church community before you even arrive.',
+              },
+            ].map((card) => (
+              <div key={card.title} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6">
+                <div className="mb-4">{card.icon}</div>
+                <h3 className="font-semibold text-gray-900 text-lg mb-2">{card.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{card.body}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -339,10 +332,6 @@ export default async function Home() {
               {
                 q: 'What denominations are listed on FindMyChurch?',
                 a: 'FindMyChurch NZ lists churches from a wide range of Christian traditions across New Zealand, including Catholic, Baptist, Anglican, Presbyterian, Methodist, Pentecostal, and more. Browse our denomination guides to learn about each tradition before you visit.',
-              },
-              {
-                q: 'Is FindMyChurch free to use?',
-                a: 'Yes — FindMyChurch is completely free for anyone looking for a church in New Zealand. Simply search by location or browse by denomination and connect with local churches across Aotearoa at no cost.',
               },
               {
                 q: 'Can I add my church to the directory?',
@@ -371,7 +360,7 @@ export default async function Home() {
             href="/churches"
             className="inline-block bg-deep-green text-white px-8 py-4 rounded-md font-semibold text-base hover:bg-deep-green/90 transition-colors"
           >
-            Get started
+            Find your place
           </a>
         </div>
       </section>

@@ -49,6 +49,23 @@ export default async function DenominationsPage() {
         </div>
       </section>
 
+      {/* ── Intro ── */}
+      <section className="bg-white border-b border-sage/20 px-4 sm:px-6 py-10">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-deep-green mb-4">Different Traditions, One Faith</h2>
+          <p className="text-gray-600 leading-relaxed mb-3">
+            Every church listed on FindMyChurch NZ shares a common faith in Jesus Christ.
+            Denominations simply reflect different styles of worship, governance and tradition —
+            not different Gods or different gospels. Think of them as different expressions of the
+            same faith, each with their own character and community.
+          </p>
+          <p className="text-gray-400 text-sm">
+            Not sure which tradition is right for you? Browse them below — or simply search for a
+            church near you and visit one that feels welcoming.
+          </p>
+        </div>
+      </section>
+
       {/* ── Grid ── */}
       <section className="py-16 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
