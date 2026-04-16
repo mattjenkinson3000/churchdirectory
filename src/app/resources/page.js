@@ -23,11 +23,11 @@ const NEW_TO_FAITH = [
     button: 'Find a course near you',
   },
   {
-    title: 'Bible Society NZ',
+    title: 'Manna Christian Bookstore',
     description:
-      'Free and affordable Bibles for anyone who wants one, delivered across New Zealand.',
-    href: 'https://www.biblesociety.org.nz',
-    button: 'Get a Bible',
+      "New Zealand's leading Christian bookstore. Find affordable Bibles, beautiful gift editions and resources for new believers, delivered across Aotearoa.",
+    href: 'https://manna.co.nz',
+    button: 'Find a Bible',
   },
   {
     title: 'YouVersion Bible App',
@@ -37,11 +37,11 @@ const NEW_TO_FAITH = [
     button: 'Download free',
   },
   {
-    title: 'GodSpace NZ',
+    title: 'Bible Project',
     description:
-      'A New Zealand Christian community with articles and resources for those exploring faith.',
-    href: 'https://godspace.org.nz',
-    button: 'Explore',
+      'Free animated videos that make the Bible engaging and easy to understand. A great starting point for anyone new to Christianity.',
+    href: 'https://bibleproject.com',
+    button: 'Watch free',
   },
 ]
 
@@ -54,11 +54,11 @@ const GROW_YOUR_FAITH = [
     button: 'Explore studies',
   },
   {
-    title: 'Bible Project',
+    title: 'Olive Tree Bible App',
     description:
-      'Free animated videos making the Bible accessible and engaging. Loved by churches worldwide.',
-    href: 'https://bibleproject.com',
-    button: 'Watch free',
+      'A powerful Bible study app for deeper reading, commentaries and study tools.',
+    href: 'https://www.olivetree.com',
+    button: 'Download',
   },
   {
     title: 'Carey Baptist College NZ',
@@ -68,11 +68,11 @@ const GROW_YOUR_FAITH = [
     button: 'Learn more',
   },
   {
-    title: 'Olive Tree Bible App',
+    title: 'BibleThinker',
     description:
-      'A powerful Bible study app for deeper reading, commentaries and study tools.',
-    href: 'https://www.olivetree.com',
-    button: 'Download',
+      'In-depth Bible teaching from pastor and teacher Mike Winger. Thousands of free videos covering theology, apologetics and scripture study.',
+    href: 'https://biblethinker.org',
+    button: 'Watch free',
   },
 ]
 
