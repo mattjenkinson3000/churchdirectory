@@ -52,7 +52,7 @@ export default async function DenominationsPage() {
       {/* ── Intro ── */}
       <section className="bg-white border-b border-sage/20 px-4 sm:px-6 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-deep-green mb-4">Different Traditions, One Faith</h2>
+          <h2 className="text-2xl font-bold text-deep-green mb-4">Different Traditions, One Faith in Jesus Christ</h2>
           <p className="text-gray-600 leading-relaxed mb-3">
             Every church listed on FindMyChurch NZ shares a common faith in Jesus Christ.
             Denominations simply reflect different styles of worship, governance and tradition —

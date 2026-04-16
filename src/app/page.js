@@ -140,7 +140,7 @@ export default async function Home() {
             Connecting you to welcoming churches across Aotearoa New Zealand
           </p>
           <p className="mt-4 text-base italic text-sage font-medium">
-            Come as you are. There&apos;s a place for you.
+            Come as you are. Jesus welcomes everyone — and so do the churches across Aotearoa.
           </p>
         </div>
 
@@ -288,7 +288,7 @@ export default async function Home() {
                   </svg>
                 ),
                 title: 'Just curious?',
-                body: 'No pressure, no commitment. Browse churches in your area and explore at your own pace.',
+                body: 'Curious about Jesus or the Christian faith? No pressure, no commitment. Browse churches in your area and explore at your own pace.',
               },
               {
                 icon: (
@@ -297,7 +297,7 @@ export default async function Home() {
                   </svg>
                 ),
                 title: 'New to faith?',
-                body: 'Finding the right church community early on makes a real difference. We\'ll help you find somewhere warm and welcoming.',
+                body: 'Taking your first steps toward Jesus is a big deal. Finding the right church community early on makes a real difference — somewhere warm, welcoming and real.',
               },
               {
                 icon: (
@@ -306,7 +306,7 @@ export default async function Home() {
                   </svg>
                 ),
                 title: 'Relocating?',
-                body: 'Moving to a new city doesn\'t mean starting from scratch. Find your new church community before you even arrive.',
+                body: 'Moving to a new city doesn\'t mean starting from scratch in your faith. Find a church community that loves Jesus and will love you too.',
               },
             ].map((card) => (
               <div key={card.title} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6">
@@ -352,9 +352,9 @@ export default async function Home() {
       {/* ── CTA section ── */}
       <section className="bg-warm-sand py-20 px-4 sm:px-6">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-deep-green mb-4">You&apos;re not alone</h2>
+          <h2 className="text-4xl font-bold text-deep-green mb-4">You&apos;re not alone — and neither was anyone else</h2>
           <p className="text-gray-700 text-lg mb-8">
-            Kiwis across Aotearoa are finding community, belonging, and hope through local churches. Let us help you find yours.
+            Jesus built his church on ordinary people at different stages of their journey. Churches across Aotearoa are full of people just like you — curious, growing, and finding their way. Let us help you find yours.
           </p>
           <a
             href="/churches"

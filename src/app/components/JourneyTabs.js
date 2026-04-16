@@ -32,7 +32,7 @@ function ExploringFaith() {
     <div>
       <h2 className="text-2xl font-bold text-deep-green mb-3">Curious about Christianity?</h2>
       <p className="text-gray-600 leading-relaxed mb-6">
-        Whether you&apos;ve just started asking questions or you&apos;ve been wondering for a while, you&apos;re welcome here. Churches across Aotearoa are open to anyone who wants to explore.
+        Whether you&apos;ve just started asking questions about Jesus or you&apos;ve been wondering for a while, you&apos;re welcome here. Churches across Aotearoa are open to anyone who wants to explore — no experience required.
       </p>
 
       <a
