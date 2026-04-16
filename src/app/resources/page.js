@@ -192,7 +192,7 @@ export default function ResourcesPage() {
       <main>
         {/* ── Header ── */}
         <section className="bg-deep-green text-white py-16 px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <h1 className="text-4xl sm:text-5xl font-bold mb-4">Faith Resources</h1>
             <p className="text-sage text-lg max-w-2xl">
               Whether you&apos;re just starting out or deepening your faith, these resources are for you.
@@ -202,7 +202,7 @@ export default function ResourcesPage() {
 
         {/* ── Intro ── */}
         <section className="bg-white px-4 sm:px-6 py-10 border-b border-sage/20">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <p className="text-gray-600 leading-relaxed text-base max-w-3xl">
               Whether you&apos;ve just started exploring Christianity or you&apos;ve been walking in faith for
               years, having the right resources makes a real difference. We&apos;ve pulled together the best
@@ -215,7 +215,7 @@ export default function ResourcesPage() {
 
         {/* ── New to Faith ── */}
         <section className="py-16 px-4 sm:px-6 bg-off-white">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <SectionHeading>New to Faith</SectionHeading>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {NEW_TO_FAITH.map((r) => (
@@ -227,7 +227,7 @@ export default function ResourcesPage() {
 
         {/* ── Grow Your Faith ── */}
         <section className="py-16 px-4 sm:px-6 bg-white border-t border-sage/20">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <SectionHeading>Grow Your Faith</SectionHeading>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {GROW_YOUR_FAITH.map((r) => (
@@ -239,7 +239,7 @@ export default function ResourcesPage() {
 
         {/* ── Internal links ── */}
         <section className="py-14 px-4 sm:px-6 bg-off-white border-t border-sage/20">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <h2 className="text-2xl font-bold text-deep-green mb-3">Looking for a church?</h2>
             <p className="text-gray-600 text-sm mb-6 max-w-2xl">
               These resources are just the beginning. If you&apos;re ready to find a church community
@@ -261,7 +261,7 @@ export default function ResourcesPage() {
 
         {/* ── FAQ ── */}
         <section className="py-16 px-4 sm:px-6 bg-white border-t border-sage/20">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <SectionHeading>Frequently Asked Questions</SectionHeading>
             <dl className="space-y-6">
               {FAQS.map(({ question, answer }) => (
@@ -279,7 +279,7 @@ export default function ResourcesPage() {
 
         {/* ── Disclaimer ── */}
         <section className="py-10 px-4 sm:px-6 bg-off-white border-t border-sage/20">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <p className="text-gray-400 text-sm text-center">
               FindMyChurch NZ is not affiliated with these organisations. We share them because we
               believe they genuinely help people.
