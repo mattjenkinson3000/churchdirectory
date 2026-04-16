@@ -88,7 +88,7 @@ const jsonLd = [
         name: 'Is FindMyChurch free to use?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Yes — FindMyChurch is completely free for anyone looking for a church in New Zealand. Simply search by location or browse by denomination and connect with local churches across Aotearoa at no cost.',
+          text: 'Yes, FindMyChurch is completely free for anyone looking for a church in New Zealand. Simply search by location or browse by denomination and connect with local churches across Aotearoa at no cost.',
         },
       },
       {
@@ -140,7 +140,7 @@ export default async function Home() {
             Connecting you to welcoming churches across Aotearoa New Zealand
           </p>
           <p className="mt-4 text-base italic text-sage font-medium">
-            Come as you are. Jesus welcomes everyone — and so do the churches across Aotearoa.
+            Come as you are. Jesus welcomes everyone, and so do the churches across Aotearoa.
           </p>
         </div>
 
@@ -196,7 +196,7 @@ export default async function Home() {
       <section className="bg-white py-8 px-4 sm:px-6 border-b border-sage/20">
         <div className="max-w-4xl mx-auto">
           <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-            FindMyChurch makes it easy to find a church near you across Aotearoa New Zealand — whether you&apos;re looking for Catholic, Baptist, Anglican, or Presbyterian churches, or something else entirely. Search by your town or suburb, browse by denomination, and find a welcoming community that feels like home.
+            FindMyChurch makes it easy to find a church near you across Aotearoa New Zealand, whether you&apos;re looking for Catholic, Baptist, Anglican, or Presbyterian churches, or something else entirely. Search by your town or suburb, browse by denomination, and find a welcoming community that feels like home.
           </p>
         </div>
       </section>
@@ -248,7 +248,7 @@ export default async function Home() {
       {/* ── Denomination grid ── */}
       <section className="bg-white py-16 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-deep-green mb-2">Different Traditions, One Faith</h2>
+          <h2 className="text-3xl font-bold text-deep-green mb-2">Different Traditions, One Faith in Jesus Christ</h2>
           <p className="text-gray-500 mb-10">Explore the traditions and communities across Aotearoa</p>
 
           {denominations && denominations.length > 0 ? (
@@ -277,7 +277,7 @@ export default async function Home() {
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-deep-green mb-2">Wherever you are in your journey</h2>
           <p className="text-gray-500 mb-10 max-w-2xl">
-            Churches across Aotearoa are full of people at different stages of faith — curious, new, and long-term. There&apos;s a place for you.
+            Churches across Aotearoa are full of people at different stages of faith: curious, new, and long-term. There&apos;s a place for you.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
@@ -297,7 +297,7 @@ export default async function Home() {
                   </svg>
                 ),
                 title: 'New to faith?',
-                body: 'Taking your first steps toward Jesus is a big deal. Finding the right church community early on makes a real difference — somewhere warm, welcoming and real.',
+                body: 'Taking your first steps toward Jesus is a big deal. Finding the right church community early on makes a real difference. Somewhere warm, welcoming and real.',
               },
               {
                 icon: (
@@ -352,9 +352,9 @@ export default async function Home() {
       {/* ── CTA section ── */}
       <section className="bg-warm-sand py-20 px-4 sm:px-6">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-deep-green mb-4">You&apos;re not alone — and neither was anyone else</h2>
+          <h2 className="text-4xl font-bold text-deep-green mb-4">You&apos;re not alone - and neither was anyone else</h2>
           <p className="text-gray-700 text-lg mb-8">
-            Jesus built his church on ordinary people at different stages of their journey. Churches across Aotearoa are full of people just like you — curious, growing, and finding their way. Let us help you find yours.
+            Jesus built his church on ordinary people at different stages of their journey. Churches across Aotearoa are full of people just like you, curious, growing, and finding their way. Let us help you find yours.
           </p>
           <a
             href="/churches"
