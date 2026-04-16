@@ -225,6 +225,7 @@ export default function AddChurchPage() {
                 {denominations.map((d) => (
                   <option key={d.id} value={d.id}>{d.name}</option>
                 ))}
+                <option value="other">Other / Not sure</option>
               </select>
             </div>
 
