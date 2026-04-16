@@ -1,14 +1,14 @@
 export const metadata = {
   title: 'Faith Resources | FindMyChurch NZ',
   description:
-    'Helpful resources for anyone exploring Christianity or wanting to grow in faith — courses, Bible apps, study tools and more.',
+    'Helpful resources for anyone exploring Christianity or wanting to grow in faith - courses, Bible apps, study tools and more.',
   alternates: {
     canonical: 'https://findmychurch.co.nz/resources',
   },
   openGraph: {
     title: 'Faith Resources | FindMyChurch NZ',
     description:
-      'Helpful resources for anyone exploring Christianity or wanting to grow in faith — courses, Bible apps, study tools and more.',
+      'Helpful resources for anyone exploring Christianity or wanting to grow in faith - courses, Bible apps, study tools and more.',
     url: 'https://findmychurch.co.nz/resources',
     type: 'website',
   },
@@ -32,7 +32,7 @@ const NEW_TO_FAITH = [
   {
     title: 'YouVersion Bible App',
     description:
-      'The world's most popular Bible app — free, with reading plans perfect for beginners.',
+      "The world's most popular Bible app - free, with reading plans perfect for beginners.",
     href: 'https://www.youversion.com',
     button: 'Download free',
   },
@@ -63,7 +63,7 @@ const GROW_YOUR_FAITH = [
   {
     title: 'Carey Baptist College NZ',
     description:
-      'New Zealand's leading theological college for those wanting to study faith more deeply.',
+      "New Zealand's leading theological college for those wanting to study faith more deeply.",
     href: 'https://www.carey.ac.nz',
     button: 'Learn more',
   },
