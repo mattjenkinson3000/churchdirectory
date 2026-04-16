@@ -28,6 +28,9 @@ export const metadata = {
     description: 'Find a church near you in Aotearoa New Zealand',
     site: '@findmychurchnz',
   },
+  other: {
+    'google-adsense-account': 'ca-pub-3947776241823216',
+  },
 }
 
 function LeafIcon() {
@@ -101,24 +104,15 @@ export default function RootLayout({ children }) {
         {children}
 
         <footer className="bg-deep-green text-white">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-            <div className="flex items-center gap-2 font-bold text-lg">
-              <LeafIcon />
-              <span>FindMyChurch NZ</span>
-            </div>
-            <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-sage">
-              <Link href="/churches" className="hover:text-white transition-colors">
-                Find a Church
-              </Link>
-              <Link href="/denominations" className="hover:text-white transition-colors">
-                Denominations
-              </Link>
-              <Link href="/add-church" className="hover:text-white transition-colors">
-                Add Your Church
-              </Link>
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 flex flex-col items-center gap-5 text-center">
+            <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-sage">
+              <Link href="/about" className="hover:text-white transition-colors">About</Link>
+              <Link href="/resources" className="hover:text-white transition-colors">Resources</Link>
+              <Link href="/add-church" className="hover:text-white transition-colors">Add Your Church</Link>
+              <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
             </nav>
             <p className="text-sage/70 text-xs">
-              &copy; {new Date().getFullYear()} FindMyChurch NZ
+              &copy; 2026 FindMyChurch NZ. Helping Kiwis find a church across Aotearoa.
             </p>
           </div>
         </footer>
