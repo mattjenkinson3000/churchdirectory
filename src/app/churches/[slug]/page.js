@@ -419,6 +419,26 @@ export default async function ChurchPage({ params }) {
           </div>
         </section>
 
+        {/* ── Suggest an update ── */}
+        <section className="py-8 px-4 sm:px-6 border-t border-sage/20">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-sage/20 rounded-xl px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <p className="text-sm text-gray-600">
+                Are you from this church? Suggest an update to keep your listing accurate.
+              </p>
+              <Link
+                href={`/churches/${slug}/suggest-update`}
+                className="inline-flex items-center gap-1.5 text-deep-green text-sm font-medium hover:underline shrink-0"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" />
+                </svg>
+                Is something incorrect? Suggest an update
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* ── Back link ── */}
         <section className="py-8 px-4 sm:px-6 border-t border-sage/20">
           <div className="max-w-4xl mx-auto">
