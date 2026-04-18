@@ -1,19 +1,10 @@
-// Server component — renders a Google Maps Embed iframe.
-// No 'use client' needed: an iframe requires no React state or effects.
+// Server component — renders a Google Maps embed iframe using a plain address query.
+// No API key required.
 export default function ChurchMap({ latitude, longitude, name, address }) {
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-
-  // Render nothing if coordinates or key are absent
-  if (!latitude || !longitude || !apiKey) return null
-
-  const embedSrc =
-    `https://www.google.com/maps/embed/v1/place` +
-    `?key=${apiKey}` +
-    `&q=${latitude},${longitude}` +
-    `&zoom=16`
+  if (!address) return null
 
   const directionsHref =
-    `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`
+    `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`
 
   return (
     <div>
@@ -21,7 +12,7 @@ export default function ChurchMap({ latitude, longitude, name, address }) {
       <div className="rounded-xl overflow-hidden border border-sage/40 shadow-sm h-72 sm:h-80 relative">
         <iframe
           title={`Map showing the location of ${name}${address ? `, ${address}` : ''}`}
-          src={embedSrc}
+          src={`https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`}
           width="100%"
           height="100%"
           style={{ border: 0 }}
