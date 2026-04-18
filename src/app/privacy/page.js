@@ -41,11 +41,11 @@ const SECTIONS = [
   },
   {
     heading: '7. Data Retention',
-    body: 'Church listing information is retained for as long as the listing is active on the directory. You may request removal of your church listing or contact information at any time by emailing admin@localflow.co.nz',
+    body: 'Church listing information is retained for as long as the listing is active on the directory. You may request removal of your church listing or contact information at any time by emailing matt.jenkinson@findmychurch.co.nz',
   },
   {
     heading: '8. Your Rights',
-    body: 'You have the right to request access to, correction of, or deletion of any personal information we hold about you. To exercise these rights, contact us at admin@localflow.co.nz',
+    body: 'You have the right to request access to, correction of, or deletion of any personal information we hold about you. To exercise these rights, contact us at matt.jenkinson@findmychurch.co.nz',
   },
   {
     heading: '9. Changes to This Policy',
@@ -53,7 +53,7 @@ const SECTIONS = [
   },
   {
     heading: '10. Contact',
-    body: 'For any privacy-related questions, contact us at admin@localflow.co.nz',
+    body: 'For any privacy-related questions, contact us at matt.jenkinson@findmychurch.co.nz',
   },
 ]
 

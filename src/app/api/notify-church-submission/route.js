@@ -8,7 +8,7 @@ export async function POST(request) {
 
     await resend.emails.send({
       from: 'FindMyChurch NZ <onboarding@resend.dev>',
-      to: 'admin@localflow.co.nz',
+      to: 'matt.jenkinson@findmychurch.co.nz',
       subject: `New Church Submission - ${churchName}`,
       text: `A new church has been submitted to FindMyChurch NZ.
 

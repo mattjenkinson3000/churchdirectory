@@ -73,7 +73,7 @@ const jsonLd = [
     description: 'Free church directory listing over 1,500 churches across Aotearoa New Zealand',
     contactPoint: {
       '@type': 'ContactPoint',
-      email: 'admin@localflow.co.nz',
+      email: 'matt.jenkinson@findmychurch.co.nz',
       contactType: 'customer support',
     },
     areaServed: 'NZ',
@@ -232,10 +232,10 @@ export default function AboutPage() {
               <p className="text-gray-600 leading-relaxed">
                 Have a question, spotted an error, or want to get in touch? Email us at{' '}
                 <a
-                  href="mailto:admin@localflow.co.nz"
+                  href="mailto:matt.jenkinson@findmychurch.co.nz"
                   className="text-deep-green underline hover:no-underline"
                 >
-                  admin@localflow.co.nz
+                  matt.jenkinson@findmychurch.co.nz
                 </a>
               </p>
             </div>

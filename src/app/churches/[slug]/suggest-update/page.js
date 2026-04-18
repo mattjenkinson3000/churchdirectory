@@ -341,7 +341,7 @@ export default function SuggestUpdatePage() {
             {status === 'error' && (
               <p className="text-red-500 text-sm">
                 Something went wrong. Please try again or email us at{' '}
-                <a href="mailto:admin@localflow.co.nz" className="underline">admin@localflow.co.nz</a>
+                <a href="mailto:matt.jenkinson@findmychurch.co.nz" className="underline">matt.jenkinson@findmychurch.co.nz</a>
               </p>
             )}
 

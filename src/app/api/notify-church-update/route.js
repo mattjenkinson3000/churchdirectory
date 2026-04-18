@@ -26,7 +26,7 @@ export async function POST(request) {
 
     await resend.emails.send({
       from: 'FindMyChurch NZ <onboarding@resend.dev>',
-      to: 'admin@localflow.co.nz',
+      to: 'matt.jenkinson@findmychurch.co.nz',
       subject: `Church Update Request - ${churchName}`,
       text: `A church has requested an update to their listing.
 
