@@ -107,6 +107,7 @@ export default function RootLayout({ children }) {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 flex flex-col items-center gap-5 text-center">
             <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-sage">
               <Link href="/about" className="hover:text-white transition-colors">About</Link>
+              <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
               <Link href="/resources" className="hover:text-white transition-colors">Resources</Link>
               <Link href="/add-church" className="hover:text-white transition-colors">Add Your Church</Link>
               <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>

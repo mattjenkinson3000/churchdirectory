@@ -1,0 +1,44 @@
+'use client'
+
+import { useState } from 'react'
+import Image from 'next/image'
+
+export default function ChurchPhoto({ photoUrl, name }) {
+  const [failed, setFailed] = useState(false)
+
+  const initials = name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 3)
+    .map((w) => w[0].toUpperCase())
+    .join('')
+
+  const placeholder = (
+    <div className="absolute inset-0 flex flex-col items-center justify-center gap-3" aria-hidden="true">
+      <span className="text-white/40 text-7xl font-bold tracking-widest select-none">
+        {initials}
+      </span>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1" stroke="white" className="w-10 h-10 opacity-20">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+      </svg>
+    </div>
+  )
+
+  return (
+    <div className="relative w-full h-64 sm:h-80 bg-[#2F5D50]">
+      {photoUrl && !failed ? (
+        <Image
+          src={photoUrl}
+          alt={`Photo of ${name}`}
+          fill
+          sizes="100vw"
+          className="object-cover"
+          priority
+          onError={() => setFailed(true)}
+        />
+      ) : (
+        placeholder
+      )}
+    </div>
+  )
+}

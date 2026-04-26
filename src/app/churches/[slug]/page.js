@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation'
-import Image from 'next/image'
 import Link from 'next/link'
 import { supabase } from '../../../lib/supabase'
 import ChurchMap from './ChurchMap'
+import ChurchPhoto from './ChurchPhoto'
 
 async function getChurch(slug) {
   const { data, error } = await supabase
@@ -248,24 +248,7 @@ export default async function ChurchPage({ params }) {
         </section>
 
         {/* ── Photo banner ── */}
-        <div className="relative w-full h-64 sm:h-80 bg-deep-green">
-          {photo_url ? (
-            <Image
-              src={photo_url}
-              alt={`Photo of ${name}`}
-              fill
-              sizes="100vw"
-              className="object-cover"
-              priority
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="0.75" stroke="#ffffff" className="w-24 h-24 opacity-10">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-              </svg>
-            </div>
-          )}
-        </div>
+        <ChurchPhoto photoUrl={photo_url} name={name} />
 
         {/* ── Main content ── */}
         <section className="py-12 px-4 sm:px-6">
