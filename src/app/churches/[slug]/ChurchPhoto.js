@@ -5,8 +5,6 @@ import { useState } from 'react'
 export default function ChurchPhoto({ photoUrl, name }) {
   const [failed, setFailed] = useState(false)
 
-  console.log('[ChurchPhoto]', { name, photoUrl, failed })
-
   const initials = name
     .split(/\s+/)
     .filter(Boolean)
@@ -35,10 +33,7 @@ export default function ChurchPhoto({ photoUrl, name }) {
           src={photoUrl}
           alt={`Photo of ${name}`}
           className="absolute inset-0 w-full h-full object-cover"
-          onError={() => {
-            console.log('[ChurchPhoto] onError fired for', photoUrl)
-            setFailed(true)
-          }}
+          onError={() => setFailed(true)}
         />
       ) : (
         placeholder
