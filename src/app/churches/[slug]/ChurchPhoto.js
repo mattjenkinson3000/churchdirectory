@@ -1,10 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 
 export default function ChurchPhoto({ photoUrl, name }) {
   const [failed, setFailed] = useState(false)
+
+  console.log('[ChurchPhoto]', { name, photoUrl, failed })
 
   const initials = name
     .split(/\s+/)
@@ -25,16 +26,19 @@ export default function ChurchPhoto({ photoUrl, name }) {
   )
 
   return (
-    <div className="relative w-full h-64 sm:h-80 bg-[#2F5D50]">
+    <div className="relative w-full h-64 sm:h-80 bg-[#2F5D50] overflow-hidden">
       {photoUrl && !failed ? (
-        <Image
+        // Plain <img> bypasses Next.js image optimisation entirely — the Google CDN
+        // URLs already carry their own size parameters (=w800-h500-k-no), so
+        // optimisation adds no benefit and remotePatterns is irrelevant.
+        <img
           src={photoUrl}
           alt={`Photo of ${name}`}
-          fill
-          sizes="100vw"
-          className="object-cover"
-          priority
-          onError={() => setFailed(true)}
+          className="absolute inset-0 w-full h-full object-cover"
+          onError={() => {
+            console.log('[ChurchPhoto] onError fired for', photoUrl)
+            setFailed(true)
+          }}
         />
       ) : (
         placeholder
