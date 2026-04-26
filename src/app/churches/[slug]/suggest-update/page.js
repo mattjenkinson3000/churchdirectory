@@ -73,6 +73,11 @@ export default function SuggestUpdatePage() {
     proposed_website: '',
     proposed_sunday_service_time: '',
     proposed_other_service_times: '',
+    proposed_youth_group: '',
+    proposed_bible_study: '',
+    proposed_kids_ministry: '',
+    proposed_creche: false,
+    proposed_other_gatherings: '',
     proposed_description: '',
     proposed_photo_url: '',
     contact_name: '',
@@ -85,7 +90,7 @@ export default function SuggestUpdatePage() {
     if (!slug) return
     supabase
       .from('churches')
-      .select('id, name, slug, address, suburb, city, phone, website, sunday_service_time, other_service_times, description, photo_url')
+      .select('id, name, slug, address, suburb, city, phone, website, sunday_service_time, other_service_times, youth_group, bible_study, kids_ministry, creche, other_gatherings, description, photo_url')
       .eq('slug', slug)
       .single()
       .then(({ data }) => {
@@ -101,6 +106,11 @@ export default function SuggestUpdatePage() {
             proposed_website: data.website ?? '',
             proposed_sunday_service_time: data.sunday_service_time ?? '',
             proposed_other_service_times: data.other_service_times ?? '',
+            proposed_youth_group: data.youth_group ?? '',
+            proposed_bible_study: data.bible_study ?? '',
+            proposed_kids_ministry: data.kids_ministry ?? '',
+            proposed_creche: data.creche ?? false,
+            proposed_other_gatherings: data.other_gatherings ?? '',
             proposed_description: data.description ?? '',
             proposed_photo_url: data.photo_url ?? '',
           }))
@@ -137,6 +147,11 @@ export default function SuggestUpdatePage() {
       proposed_website: form.proposed_website || null,
       proposed_sunday_service_time: form.proposed_sunday_service_time || null,
       proposed_other_service_times: form.proposed_other_service_times || null,
+      proposed_youth_group: form.proposed_youth_group || null,
+      proposed_bible_study: form.proposed_bible_study || null,
+      proposed_kids_ministry: form.proposed_kids_ministry || null,
+      proposed_creche: form.proposed_creche === true ? true : null,
+      proposed_other_gatherings: form.proposed_other_gatherings || null,
       proposed_description: form.proposed_description || null,
       proposed_photo_url: form.proposed_photo_url || null,
     }
@@ -156,6 +171,11 @@ export default function SuggestUpdatePage() {
       proposedWebsite: form.proposed_website,
       proposedSundayServiceTime: form.proposed_sunday_service_time,
       proposedOtherServiceTimes: form.proposed_other_service_times,
+      proposedYouthGroup: form.proposed_youth_group,
+      proposedBibleStudy: form.proposed_bible_study,
+      proposedKidsMinistry: form.proposed_kids_ministry,
+      proposedCreche: form.proposed_creche,
+      proposedOtherGatherings: form.proposed_other_gatherings,
       proposedDescription: form.proposed_description,
       proposedPhotoUrl: form.proposed_photo_url,
       notes: form.notes,
@@ -302,6 +322,38 @@ export default function SuggestUpdatePage() {
             <div>
               <Label htmlFor="proposed_other_service_times">Other Service Times</Label>
               <Input id="proposed_other_service_times" placeholder="e.g. Wednesday 7:00 PM" value={form.proposed_other_service_times} onChange={handleChange} />
+            </div>
+
+            <div>
+              <Label htmlFor="proposed_youth_group">Youth Group</Label>
+              <Input id="proposed_youth_group" placeholder="e.g. Friday 6:30 PM" value={form.proposed_youth_group} onChange={handleChange} />
+            </div>
+
+            <div>
+              <Label htmlFor="proposed_bible_study">Bible Study / Small Groups</Label>
+              <Input id="proposed_bible_study" placeholder="e.g. Wednesday 7:00 PM" value={form.proposed_bible_study} onChange={handleChange} />
+            </div>
+
+            <div>
+              <Label htmlFor="proposed_kids_ministry">Kids &amp; Children&apos;s Ministry</Label>
+              <Input id="proposed_kids_ministry" placeholder="e.g. Sunday during 10:00 AM service" value={form.proposed_kids_ministry} onChange={handleChange} />
+            </div>
+
+            <div>
+              <Label htmlFor="proposed_other_gatherings">Other Gatherings</Label>
+              <Input id="proposed_other_gatherings" placeholder="e.g. Prayer meeting Tuesday 6:00 AM" value={form.proposed_other_gatherings} onChange={handleChange} />
+            </div>
+
+            <div className="flex items-center gap-3">
+              <input
+                id="proposed_creche"
+                name="proposed_creche"
+                type="checkbox"
+                checked={form.proposed_creche}
+                onChange={(e) => setForm((prev) => ({ ...prev, proposed_creche: e.target.checked }))}
+                className="w-4 h-4 accent-deep-green"
+              />
+              <Label htmlFor="proposed_creche">Crèche On-Site</Label>
             </div>
 
             {/* About */}

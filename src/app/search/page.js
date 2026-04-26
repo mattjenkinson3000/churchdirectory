@@ -90,6 +90,7 @@ function matchScore(church, lowerQuery) {
   if (church.city?.toLowerCase() === lowerQuery) return 3
   if (church.city?.toLowerCase().includes(lowerQuery)) return 2
   if (church.suburb?.toLowerCase().includes(lowerQuery)) return 1
+  if (church.address?.toLowerCase().includes(lowerQuery)) return 0.5
   return 0
 }
 
@@ -115,7 +116,7 @@ async function searchChurches(query, denominationSlug) {
     .limit(RESULT_LIMIT + 1)
 
   if (query) {
-    dbQuery = dbQuery.or(`name.ilike.%${query}%,city.ilike.%${query}%,suburb.ilike.%${query}%`)
+    dbQuery = dbQuery.or(`name.ilike.%${query}%,city.ilike.%${query}%,suburb.ilike.%${query}%,address.ilike.%${query}%`)
   }
   if (denominationId) {
     dbQuery = dbQuery.eq('denomination_id', denominationId)

@@ -19,6 +19,12 @@ async function getChurch(slug) {
       phone,
       website,
       sunday_service_time,
+      other_service_times,
+      youth_group,
+      bible_study,
+      kids_ministry,
+      creche,
+      other_gatherings,
       description,
       latitude,
       longitude,
@@ -105,6 +111,12 @@ export default async function ChurchPage({ params }) {
     phone,
     website,
     sunday_service_time,
+    other_service_times,
+    youth_group,
+    bible_study,
+    kids_ministry,
+    creche,
+    other_gatherings,
     description,
     latitude,
     longitude,
@@ -267,19 +279,67 @@ export default async function ChurchPage({ params }) {
                 </div>
               )}
 
-              {sunday_service_time && (
+              {(sunday_service_time || other_service_times || youth_group || bible_study || kids_ministry || creche || other_gatherings) && (
                 <div>
-                  <h2 className="text-xl font-bold text-deep-green mb-3">Service times</h2>
+                  <h2 className="text-xl font-bold text-deep-green mb-3">Services &amp; Gatherings</h2>
                   <div className="bg-white border border-sage/30 rounded-xl p-5">
-                    <ul className="space-y-2" aria-label={`Service times at ${name}`}>
-                      {sunday_service_time.split(',').map((t) => t.trim()).filter(Boolean).map((time, i) => (
-                        <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                    <ul className="space-y-2" aria-label={`Services and gatherings at ${name}`}>
+                      {sunday_service_time && sunday_service_time.split(',').map((t) => t.trim()).filter(Boolean).map((time, i) => (
+                        <li key={`sun-${i}`} className="flex items-start gap-2 text-sm text-gray-600">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2F5D50" className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                           </svg>
-                          Sunday {time}
+                          <span><span className="font-medium text-gray-700">Sunday Services</span> — {time}</span>
                         </li>
                       ))}
+                      {other_service_times && (
+                        <li className="flex items-start gap-2 text-sm text-gray-600">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2F5D50" className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                          </svg>
+                          <span><span className="font-medium text-gray-700">Other Services</span> — {other_service_times}</span>
+                        </li>
+                      )}
+                      {youth_group && (
+                        <li className="flex items-start gap-2 text-sm text-gray-600">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2F5D50" className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                          </svg>
+                          <span><span className="font-medium text-gray-700">Youth Group</span> — {youth_group}</span>
+                        </li>
+                      )}
+                      {bible_study && (
+                        <li className="flex items-start gap-2 text-sm text-gray-600">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2F5D50" className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                          </svg>
+                          <span><span className="font-medium text-gray-700">Bible Study / Small Groups</span> — {bible_study}</span>
+                        </li>
+                      )}
+                      {kids_ministry && (
+                        <li className="flex items-start gap-2 text-sm text-gray-600">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2F5D50" className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                          </svg>
+                          <span><span className="font-medium text-gray-700">Kids &amp; Children&apos;s Ministry</span> — {kids_ministry}</span>
+                        </li>
+                      )}
+                      {creche && (
+                        <li className="flex items-start gap-2 text-sm text-gray-600">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2F5D50" className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                          </svg>
+                          <span><span className="font-medium text-gray-700">Crèche On-Site</span> — Yes</span>
+                        </li>
+                      )}
+                      {other_gatherings && (
+                        <li className="flex items-start gap-2 text-sm text-gray-600">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2F5D50" className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                          </svg>
+                          <span><span className="font-medium text-gray-700">Other Gatherings</span> — {other_gatherings}</span>
+                        </li>
+                      )}
                     </ul>
                   </div>
                 </div>
