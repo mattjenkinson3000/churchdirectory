@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { supabase } from '../../lib/supabase'
 import LocationButton from '../components/LocationButton'
@@ -499,12 +498,10 @@ export default async function SearchPage({ searchParams }) {
                       {/* Photo banner */}
                       <div className="relative h-36 bg-sage/30">
                         {c.photo_url ? (
-                          <Image
+                          <img
                             src={c.photo_url}
                             alt={`Photo of ${c.name}`}
-                            fill
-                            sizes="(max-width: 640px) 100vw, 50vw"
-                            className="object-cover"
+                            className="absolute inset-0 w-full h-full object-cover"
                           />
                         ) : (
                           <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
