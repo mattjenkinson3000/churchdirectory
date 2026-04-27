@@ -1,5 +1,6 @@
 import { supabase } from '../../lib/supabase'
 import Link from 'next/link'
+import { denominationContent } from './[slug]/content'
 
 export const metadata = {
   title: 'Christian Denominations in New Zealand | FindMyChurch NZ',
@@ -80,9 +81,9 @@ export default async function DenominationsPage() {
                   <h2 className="font-semibold text-deep-green text-lg mb-2 group-hover:underline">
                     {d.name}
                   </h2>
-                  {d.short_description && (
+                  {(denominationContent[d.slug]?.short_description ?? d.short_description) && (
                     <p className="text-gray-500 text-sm leading-relaxed line-clamp-3">
-                      {d.short_description}
+                      {denominationContent[d.slug]?.short_description ?? d.short_description}
                     </p>
                   )}
                   <span className="mt-4 inline-flex items-center gap-1 text-deep-green text-sm font-medium">

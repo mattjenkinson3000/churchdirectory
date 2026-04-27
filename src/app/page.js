@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { supabase } from '../lib/supabase'
 import LocationButton from './components/LocationButton'
 import JourneyTabs from './components/JourneyTabs'
+import { denominationContent } from './denominations/[slug]/content'
 
 export const metadata = {
   title: 'Find a Church in New Zealand | FindMyChurch NZ',
@@ -260,8 +261,8 @@ export default async function Home() {
                   className="group block border border-sage/40 rounded-xl p-5 hover:border-deep-green/50 hover:shadow-sm transition-all bg-off-white"
                 >
                   <h3 className="font-semibold text-deep-green text-base mb-1 group-hover:underline">{d.name}</h3>
-                  {d.short_description && (
-                    <p className="text-gray-500 text-sm leading-relaxed line-clamp-2">{d.short_description}</p>
+                  {(denominationContent[d.slug]?.short_description ?? d.short_description) && (
+                    <p className="text-gray-500 text-sm leading-relaxed line-clamp-2">{denominationContent[d.slug]?.short_description ?? d.short_description}</p>
                   )}
                 </Link>
               ))}

@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '../../../lib/supabase'
+import { denominationContent } from './content'
 
 async function getDenomination(slug) {
   const { data, error } = await supabase
@@ -29,7 +30,8 @@ export async function generateMetadata({ params }) {
     return { title: 'Denomination Not Found | FindMyChurch NZ' }
   }
 
-  const { name, short_description } = denomination
+  const { name } = denomination
+  const short_description = denominationContent[slug]?.short_description ?? denomination.short_description
   const title = `${name} Churches in New Zealand | FindMyChurch NZ`
   const description = `Find ${name} churches near you in New Zealand. ${short_description ?? ''} Search by location and find your local ${name} church today.`.trim()
 
@@ -58,7 +60,12 @@ export default async function DenominationPage({ params }) {
 
   if (!denomination) notFound()
 
-  const { id: denominationId, name, short_description, full_description } = denomination
+  const localContent = denominationContent[slug] ?? {}
+  const { id: denominationId, name } = denomination
+  const short_description = localContent.short_description ?? denomination.short_description
+  // full_description may be an array (local content) or newline-delimited string (DB)
+  const fullDescParagraphs = localContent.full_description
+    ?? (denomination.full_description ? denomination.full_description.split('\n').filter(Boolean) : null)
 
   // Distinct cities for this denomination
   const { data: cityRows } = await supabase
@@ -203,12 +210,12 @@ export default async function DenominationPage({ params }) {
         </section>
 
         {/* ── Full description ── */}
-        {full_description && (
+        {fullDescParagraphs && (
           <section className="py-16 px-4 sm:px-6 bg-white">
-            <div className="max-w-3xl mx-auto prose prose-p:text-gray-600 prose-headings:text-deep-green prose-a:text-deep-green max-w-none">
-              <h2 className="text-2xl font-bold text-deep-green mb-6">About {name}</h2>
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-2xl font-bold text-deep-green mb-6">About {name} churches</h2>
               <div className="text-gray-600 leading-relaxed space-y-4">
-                {full_description.split('\n').filter(Boolean).map((para, i) => (
+                {fullDescParagraphs.map((para, i) => (
                   <p key={i}>{para}</p>
                 ))}
               </div>
