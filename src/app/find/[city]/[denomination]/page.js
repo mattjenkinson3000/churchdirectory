@@ -9,7 +9,7 @@ const SITE_URL = 'https://findmychurch.co.nz'
 
 /** "new plymouth" → "New Plymouth" */
 function titleCase(str) {
-  return str.replace(/\b\w/g, (c) => c.toUpperCase())
+  return str.replace(/[_]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
 }
 
 function StarRating({ rating, count }) {

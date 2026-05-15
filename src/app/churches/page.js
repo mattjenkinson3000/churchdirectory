@@ -103,6 +103,18 @@ export default async function ChurchesPage() {
           </div>
         </section>
 
+        {/* ── Browse options ── */}
+        <div className="bg-white border-b border-sage/20 px-4 sm:px-6 py-3">
+          <div className="max-w-6xl mx-auto flex items-center gap-3 text-sm">
+            <span className="font-semibold text-deep-green">Browse:</span>
+            <span className="text-deep-green font-medium">All churches</span>
+            <span className="text-sage/60">·</span>
+            <Link href="/churches/browse" className="text-gray-500 hover:text-deep-green transition-colors">
+              By city &amp; denomination
+            </Link>
+          </div>
+        </div>
+
         {/* ── City jump links ── */}
         {citiesMap.size > 1 && (
           <nav aria-label="Jump to city" className="bg-white border-b border-sage/20 px-4 sm:px-6 py-3">
