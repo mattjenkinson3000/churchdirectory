@@ -7,9 +7,9 @@ const SITE_URL = 'https://findmychurch.co.nz'
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-/** "new plymouth" → "New Plymouth" */
+/** "new-plymouth" or "new_plymouth" → "New Plymouth" */
 function titleCase(str) {
-  return str.replace(/[_]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+  return str.replace(/[_-]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
 }
 
 function StarRating({ rating, count }) {
@@ -147,7 +147,7 @@ export async function generateStaticParams() {
     const key = `${city.toLowerCase()}|${slug}`
     if (!seen.has(key)) {
       seen.add(key)
-      params.push({ city: city.toLowerCase(), denomination: slug })
+      params.push({ city: city.toLowerCase().replace(/\s+/g, '-'), denomination: slug })
     }
   }
   return params
@@ -157,6 +157,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) {
   const { city, denomination } = await params
+  const cityForDb = city.replace(/-/g, ' ')
   const cityDisplay = titleCase(city)
 
   const denom = await getDenomination(denomination)
@@ -166,7 +167,7 @@ export async function generateMetadata({ params }) {
     .from('churches')
     .select('id', { count: 'exact', head: true })
     .eq('is_active', true)
-    .ilike('city', city)
+    .ilike('city', cityForDb)
     .eq('denomination_id', denom.id)
 
   const title = `${denom.name} Churches in ${cityDisplay} | FindMyChurch NZ`
@@ -189,16 +190,17 @@ export async function generateMetadata({ params }) {
 
 export default async function CityDenominationPage({ params }) {
   const { city, denomination } = await params
+  const cityForDb = city.replace(/-/g, ' ')
   const cityDisplay = titleCase(city)
 
   const denom = await getDenomination(denomination)
   if (!denom) notFound()
 
   const [churches, relatedDenoms, relatedCities, topSuburbs] = await Promise.all([
-    getChurches(city, denom.id),
-    getRelatedDenominations(city, denom.id),
-    getRelatedCities(denom.id, city),
-    getTopSuburbs(city, denom.id),
+    getChurches(cityForDb, denom.id),
+    getRelatedDenominations(cityForDb, denom.id),
+    getRelatedCities(denom.id, cityForDb),
+    getTopSuburbs(cityForDb, denom.id),
   ])
 
   const introParagraph = buildIntroParagraph(churches.length, denom.name, cityDisplay, topSuburbs)
@@ -467,7 +469,7 @@ export default async function CityDenominationPage({ params }) {
                       {relatedCities.slice(0, 12).map((relCity) => (
                         <Link
                           key={relCity}
-                          href={`/find/${relCity.toLowerCase()}/${denomination}`}
+                          href={`/find/${relCity.toLowerCase().replace(/\s+/g, '-')}/${denomination}`}
                           className="inline-block bg-white border border-sage/40 text-deep-green text-sm px-3 py-1.5 rounded-full hover:bg-sage/20 transition-colors"
                         >
                           {relCity}

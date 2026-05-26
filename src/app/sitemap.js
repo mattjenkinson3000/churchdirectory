@@ -31,8 +31,9 @@ export default async function sitemap() {
     const key = `${city.toLowerCase()}|${slug}`
     if (!seen.has(key)) {
       seen.add(key)
+      const citySlug = encodeURIComponent(city.toLowerCase().replace(/\s+/g, '-'))
       findUrls.push({
-        url: `${BASE_URL}/find/${city.toLowerCase()}/${slug}`,
+        url: `${BASE_URL}/find/${citySlug}/${slug}`,
         lastModified: new Date(),
         changeFrequency: 'weekly',
         priority: 0.8,
@@ -49,6 +50,12 @@ export default async function sitemap() {
     },
     {
       url: `${BASE_URL}/denominations`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/churches/browse`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.9,
